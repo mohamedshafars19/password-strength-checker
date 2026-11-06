@@ -6,7 +6,7 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-34C759?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/mohamedshafars19/password-strength-checker)
 
-A native macOS-inspired Password Strength Checker built with a realistic Mac desktop window frame, full-screen dark application layout, real-time security heuristics, and 100% client-side privacy.
+An elegant, warm-light Password Strength Checker inspired by the visual design direction of **Convertly**, featuring warm cream backgrounds, white cards, soft yellow accents, a macOS-inspired top bar, real-time security heuristics, and 100% client-side privacy.
 
 It provides real-time validation, security heuristic analysis, and actionable improvement recommendations, available both as a standalone **Python CLI application** and a **zero-dependency browser demo** deployed on Vercel and GitHub Pages.
 
@@ -24,12 +24,12 @@ Experience the live application deployed on Vercel:
 
 ## Key Features
 
-- **macOS Desktop Window Architecture**: Designed to feel like a real native desktop application — featuring realistic window title bar with red, yellow, and green traffic lights, title bar lock badge, dark charcoal surfaces, and deep dark desktop wallpaper gradient.
-- **Full-Screen Spacious Layout**: Replaces narrow centered cards with an expansive desktop layout using 95% of viewport width and 92% of viewport height, organizing content across a 2-column workspace with a 6-tile requirements grid and live security metrics.
-- **Dark Theme by Default**: Premium, understated dark aesthetic using Apple's Dark Mode system colors — deep charcoal background, `#16171B` window chrome, `#1E1F25` surface cards, `#0A84FF` blue interactive accents, and `#30D158` success indicators.
+- **Convertly-Inspired Warm Light Aesthetic**: Soft warm cream background (`#F5F2EA`), crisp white cards (`#FFFFFF`), pastel yellow accents (`#F8D66D`), warm grey surfaces (`#E9E4DA`), and high-contrast typography (`#242424`).
+- **macOS-Inspired Top Application Bar**: Subtle pastel red, yellow, and green window controls, centered application title, minimal SVG icons, and a thin subtle border.
+- **Full-Width Two-Column Workspace**: Generous desktop layout organizing the password input hub and strength meters on the left, with compact security guidance and audit summaries on the right.
 - **Dual Implementation Parity**: Python and JavaScript engines share identical validation logic, scoring models, and security checks.
-- **Real-Time Interactive Feedback**: Instant evaluation as you type, updating visual indicators, score progress, and checklist items.
-- **Show/Hide & One-Click Clear**: Native-feeling controls for toggling password visibility and resetting input.
+- **Real-Time Interactive Feedback**: Instant evaluation as you type, updating visual indicators, score progress, and live metrics.
+- **Show/Hide & One-Click Clear**: Clean controls for toggling password visibility and clearing input (with `Esc` key support).
 - **Security Heuristics**: Beyond simple character counting, it detects common leaked passwords, repeated character sequences, and predictable keyboard/alphanumeric runs.
 - **Actionable Guidance**: Clear, contextual recommendations explain exactly what steps to take to strengthen weak passwords.
 - **100% Client-Side Privacy**: Operates with complete zero-knowledge isolation — no server backend, no third-party APIs, no cookies, and no persistent storage.

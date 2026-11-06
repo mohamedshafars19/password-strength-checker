@@ -1,5 +1,5 @@
 /**
- * Password Strength Checker - Core Logic & macOS UI Controller
+ * Password Strength Checker - Core Logic & Convertly-Inspired UI Controller
  * 100% Client-Side, Zero Tracking, Zero Network Calls.
  */
 
@@ -295,7 +295,7 @@ if (typeof module !== "undefined" && module.exports) {
   };
 }
 
-// macOS Application Browser UI Controller
+// Convertly-Inspired UI Controller
 if (typeof window !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.getElementById("password-input");
@@ -312,14 +312,7 @@ if (typeof window !== "undefined") {
     const metricTypes = document.getElementById("metric-types");
     const metricLength = document.getElementById("metric-length");
     const requirementsCounter = document.getElementById("requirements-counter");
-    const statusbarText = document.getElementById("statusbar-text");
-
-    const reqLength = document.getElementById("req-length");
-    const reqUpper = document.getElementById("req-upper");
-    const reqLower = document.getElementById("req-lower");
-    const reqNumber = document.getElementById("req-number");
-    const reqSpecial = document.getElementById("req-special");
-    const reqLength12 = document.getElementById("req-length12");
+    const tierBadgeText = document.getElementById("tier-badge-text");
 
     const chipCommon = document.getElementById("chip-common");
     const chipRepeated = document.getElementById("chip-repeated");
@@ -331,44 +324,18 @@ if (typeof window !== "undefined") {
       passwordInput.value = "";
     }
 
-    function updateTile(element, isMet, isBonus = false) {
-      if (!element) return;
-      const icon = element.querySelector(".req-icon");
-      const tag = element.querySelector(".req-status-tag");
-
-      if (isMet) {
-        element.classList.add("is-met");
-        element.classList.remove("is-unmet");
-        if (icon) {
-          icon.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-        }
-        if (tag) {
-          tag.textContent = isBonus ? "Bonus Met" : "Satisfied";
-        }
-      } else {
-        element.classList.remove("is-met");
-        element.classList.add("is-unmet");
-        if (icon) {
-          icon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>`;
-        }
-        if (tag) {
-          tag.textContent = isBonus ? "Recommended" : "Required";
-        }
-      }
-    }
-
-    function updateHeuristicChip(chip, isTriggered, triggerLabel, cleanLabel) {
+    function updateTagChip(chip, isTriggered, triggerLabel, cleanLabel) {
       if (!chip) return;
-      chip.className = "h-chip";
+      chip.className = "tag-state";
       if (!passwordInput.value) {
-        chip.classList.add("chip-neutral");
-        chip.textContent = cleanLabel;
+        chip.classList.add("state-neutral");
+        chip.textContent = "Clean";
       } else if (isTriggered) {
-        chip.classList.add("chip-warning");
+        chip.classList.add("state-warning");
         chip.textContent = triggerLabel;
       } else {
-        chip.classList.add("chip-passed");
-        chip.textContent = cleanLabel + ": Clean";
+        chip.classList.add("state-passed");
+        chip.textContent = cleanLabel;
       }
     }
 
@@ -377,7 +344,7 @@ if (typeof window !== "undefined") {
       const result = checkPasswordStrength(val);
       const len = val.length;
 
-      // Character counter
+      // Character count
       if (charCounter) {
         charCounter.textContent = `${len} character${len === 1 ? "" : "s"}`;
       }
@@ -388,17 +355,9 @@ if (typeof window !== "undefined") {
         clearInputBtn.style.pointerEvents = len > 0 ? "auto" : "none";
       }
 
-      // Update Requirement Tiles
-      updateTile(reqLength, result.requirements.length);
-      updateTile(reqUpper, result.requirements.uppercase);
-      updateTile(reqLower, result.requirements.lowercase);
-      updateTile(reqNumber, result.requirements.digit);
-      updateTile(reqSpecial, result.requirements.special);
-      updateTile(reqLength12, result.requirements.length12, true);
-
-      // Requirements Counter Badge
+      // Requirements Counter
       if (requirementsCounter) {
-        requirementsCounter.textContent = `${result.score} of 5 met`;
+        requirementsCounter.textContent = `${result.score} of 5 Passed`;
       }
 
       // Metrics Snapshot
@@ -413,20 +372,21 @@ if (typeof window !== "undefined") {
       if (result.requirements.special) typesCount++;
 
       if (metricTypes) {
-        metricTypes.textContent = `${typesCount} of 4`;
+        metricTypes.textContent = `${typesCount} of 4 Types`;
       }
 
       // Strength Badge & Progress Bar
-      strengthBadge.className = "mac-pill";
-      progressBar.className = "mac-progress-fill";
+      strengthBadge.className = "strength-pill";
+      progressBar.className = "progress-fill";
 
       let stateClass = "state-waiting";
       let statusDescriptor = "Waiting for input";
-      let statusbarMsg = "System Ready • Real-Time Local Engine";
+      let tierDescriptor = "Awaiting Input";
 
       if (len === 0) {
         stateClass = "state-waiting";
         statusDescriptor = "Waiting for input";
+        tierDescriptor = "Awaiting Input";
         strengthScore.textContent = "0/5";
         progressBar.style.width = "0%";
         if (metricStatus) metricStatus.textContent = "Awaiting Input";
@@ -437,63 +397,62 @@ if (typeof window !== "undefined") {
         if (result.strength === "Weak") {
           stateClass = "state-weak";
           statusDescriptor = "Weak";
-          statusbarMsg = "Evaluation: Weak — Actionable improvements required";
-          if (metricStatus) metricStatus.textContent = "Weak (Poor)";
+          tierDescriptor = "Weak (Needs Improvement)";
+          if (metricStatus) metricStatus.textContent = "Weak";
         } else if (result.strength === "Good") {
           stateClass = "state-good";
           statusDescriptor = "Good";
-          statusbarMsg = "Evaluation: Good — Meets most criteria";
-          if (metricStatus) metricStatus.textContent = "Good (Medium)";
+          tierDescriptor = "Good (Solid Defense)";
+          if (metricStatus) metricStatus.textContent = "Good";
         } else if (result.strength === "Excellent") {
           stateClass = "state-excellent";
           statusDescriptor = "Excellent";
-          statusbarMsg = "Evaluation: Excellent — Strong password accepted";
-          if (metricStatus) metricStatus.textContent = "Excellent (Strong)";
+          tierDescriptor = "Excellent (Resilient)";
+          if (metricStatus) metricStatus.textContent = "Excellent";
         }
       }
 
       strengthBadge.classList.add(stateClass);
       progressBar.classList.add(stateClass);
       strengthStatusText.textContent = statusDescriptor;
-      if (statusbarText) statusbarText.textContent = statusbarMsg;
+      if (tierBadgeText) tierBadgeText.textContent = tierDescriptor;
 
-      // Heuristic Pattern Chips
-      updateHeuristicChip(chipCommon, result.securityChecks.isCommon, "Common Password!", "Common Check");
-      updateHeuristicChip(chipRepeated, result.securityChecks.hasRepeated, "Repeated Chars!", "Repetition Check");
-      updateHeuristicChip(chipSequential, result.securityChecks.hasSequential, "Sequences!", "Sequence Check");
+      // Heuristic Checks Summary
+      updateTagChip(chipCommon, result.securityChecks.isCommon, "Common Warning", "Passed");
+      updateTagChip(chipRepeated, result.securityChecks.hasRepeated, "Repetition Warning", "Passed");
+      updateTagChip(chipSequential, result.securityChecks.hasSequential, "Sequence Warning", "Passed");
 
-      // Recommendations List
+      // Dynamic Guidance / Recommendations
       recommendationsList.innerHTML = "";
       if (len === 0) {
         const item = document.createElement("li");
-        item.className = "rec-item rec-info";
+        item.className = "rec-row rec-placeholder";
         item.innerHTML = `
-          <span class="rec-bullet">•</span>
-          <span>Enter a password above to evaluate strength and heuristic patterns.</span>
+          <span class="rec-bullet-dot"></span>
+          <span>Enter a password on the left to reveal real-time security suggestions and strength metrics.</span>
         `;
         recommendationsList.appendChild(item);
       } else if (result.isAcceptable && result.requirements.length12) {
         const item = document.createElement("li");
-        item.className = "rec-item tip-success";
+        item.className = "rec-row tip-success";
         item.innerHTML = `
-          <span class="rec-icon-success">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </span>
+          <span class="rec-bullet-dot"></span>
           <span>Outstanding password! All requirements and security heuristics are satisfied.</span>
         `;
         recommendationsList.appendChild(item);
       } else {
         result.recommendations.forEach(rec => {
           const item = document.createElement("li");
-          item.className = "rec-item";
+          item.className = "rec-row";
 
-          let iconSvg = `<span class="rec-bullet">•</span>`;
           if (rec.includes("common") || rec.includes("Avoid")) {
             item.classList.add("tip-warning");
-            iconSvg = `<span class="rec-icon-warning"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></span>`;
           }
 
-          item.innerHTML = `${iconSvg}<span>${rec}</span>`;
+          item.innerHTML = `
+            <span class="rec-bullet-dot"></span>
+            <span>${rec}</span>
+          `;
           recommendationsList.appendChild(item);
         });
       }
