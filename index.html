@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Strength Checker | Apple-Inspired Security</title>
+  <meta name="description" content="An elegant, Apple-inspired password strength checker. Real-time validation, security heuristic checks, and 100% client-side privacy.">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Top Navigation / Brand Bar -->
+    <header class="app-nav">
+      <div class="nav-brand">
+        <svg class="nav-apple-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>Apple Passwords Inspired</span>
+      </div>
+      <div class="nav-privacy-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <span>100% Client-Side</span>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Hero Header -->
+      <section class="hero-section">
+        <span class="hero-badge">PASSWORD SECURITY</span>
+        <h1 class="hero-title">Your Password. Your Security.</h1>
+        <p class="hero-subtitle">Check your password strength and discover how to make it stronger.</p>
+      </section>
+
+      <!-- Main Password Checker Card -->
+      <section class="card checker-card" aria-label="Password Evaluation Card">
+
+        <!-- Input Group -->
+        <div class="input-card-section">
+          <label for="password-input" class="input-label">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="password-input"
+              class="password-field"
+              placeholder="Enter a password to evaluate"
+              autocomplete="new-password"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              aria-describedby="strength-status-text"
+            />
+            <div class="input-actions">
+              <!-- Clear Input Button -->
+              <button
+                type="button"
+                id="clear-input-btn"
+                class="action-icon-btn clear-btn"
+                aria-label="Clear password input"
+                title="Clear"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              <!-- Show/Hide Toggle Button -->
+              <button
+                type="button"
+                id="toggle-password-btn"
+                class="action-icon-btn toggle-btn"
+                aria-label="Show password"
+                title="Show password"
+              >
+                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg class="eye-closed" style="display: none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                  <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                  <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                  <line x1="2" y1="2" x2="22" y2="22"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strength Indicator & Bar -->
+        <div class="strength-summary-section">
+          <div class="strength-meta-row">
+            <span class="meta-label">Overall Strength</span>
+            <div class="strength-pill-wrapper">
+              <span id="strength-badge" class="strength-pill state-waiting">
+                <span class="pill-dot"></span>
+                <span id="strength-status-text">Waiting for input</span>
+              </span>
+              <span id="strength-score" class="strength-score-label">0/5</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="strength-progress-fill" class="progress-fill state-waiting" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Requirements Checklist -->
+        <div class="checklist-section">
+          <h2 class="section-subheading">Password Requirements</h2>
+          <ul class="checklist-group" id="requirements-list">
+            <li id="req-length" class="checklist-item is-unmet">
+              <span class="req-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span class="req-label">Minimum 8 characters</span>
+            </li>
+            <li id="req-upper" class="checklist-item is-unmet">
+              <span class="req-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span class="req-label">At least one uppercase letter (A-Z)</span>
+            </li>
+            <li id="req-lower" class="checklist-item is-unmet">
+              <span class="req-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span class="req-label">At least one lowercase letter (a-z)</span>
+            </li>
+            <li id="req-number" class="checklist-item is-unmet">
+              <span class="req-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span class="req-label">At least one numeric digit (0-9)</span>
+            </li>
+            <li id="req-special" class="checklist-item is-unmet">
+              <span class="req-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span class="req-label">At least one special character (!@#$%...)</span>
+            </li>
+            <li id="req-length12" class="checklist-item is-unmet bonus-item">
+              <span class="req-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>
+              </span>
+              <span class="req-label">12+ characters <span class="badge-recommended">Recommended</span></span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Recommendations & Suggestions Box -->
+        <div class="suggestions-section" id="suggestions-section">
+          <h2 class="section-subheading">Security Guidance</h2>
+          <ul class="recommendations-list" id="recommendations-list">
+            <li class="recommendation-item tip-neutral">
+              <span class="rec-bullet">•</span>
+              <span>Enter a password above to begin security evaluation.</span>
+            </li>
+          </ul>
+        </div>
+
+      </section>
+
+      <!-- Apple Privacy & Security Guarantee Card -->
+      <section class="privacy-card" aria-label="Privacy Guarantee">
+        <div class="privacy-icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <polyline points="9 12 11 14 15 10"></polyline>
+          </svg>
+        </div>
+        <div class="privacy-text-content">
+          <h3 class="privacy-heading">Zero-Knowledge Client-Side Privacy</h3>
+          <p class="privacy-description">
+            Your password is evaluated 100% locally in your browser. No network requests are made, no cookies or local storage are accessed, and no password data is ever transmitted or recorded.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p class="footer-text">
+        Password Strength Checker • Built with Apple-inspired design principles • <a href="https://github.com/mohamedshafars19/password-strength-checker" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
