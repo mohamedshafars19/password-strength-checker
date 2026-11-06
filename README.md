@@ -1,6 +1,6 @@
 # Password Strength Checker
 
-[![Live Demo Vercel](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://password-strength-checker-black.vercel.app/)
+[![Live Demo Vercel](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://password-strength-checker-lake.vercel.app/)
 [![Live Demo GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-0071E3?style=for-the-badge&logo=safari&logoColor=white)](https://mohamedshafars19.github.io/password-strength-checker/)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
