@@ -1,27 +1,32 @@
 # Password Strength Checker
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-0071E3?style=for-the-badge&logo=safari&logoColor=white)](https://mohamedshafars19.github.io/password-strength-checker/)
+[![Live Demo Vercel](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://password-strength-checker-black.vercel.app/)
+[![Live Demo GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-0071E3?style=for-the-badge&logo=safari&logoColor=white)](https://mohamedshafars19.github.io/password-strength-checker/)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20Client--Side-34C759?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/mohamedshafars19/password-strength-checker)
 
-An elegant, privacy-first Password Strength Checker inspired by the design principles of **Apple macOS**, **Apple Passwords**, and **System Settings**.
+A native macOS-inspired Password Strength Checker built with a realistic Mac desktop window frame, full-screen dark application layout, real-time security heuristics, and 100% client-side privacy.
 
-It provides real-time validation, security heuristic analysis, and actionable improvement recommendations, available both as a standalone **Python CLI application** and a **zero-dependency browser demo** hosted on GitHub Pages.
+It provides real-time validation, security heuristic analysis, and actionable improvement recommendations, available both as a standalone **Python CLI application** and a **zero-dependency browser demo** deployed on Vercel and GitHub Pages.
 
 ---
 
 ## Live Demo
 
-Experience the live application deployed via GitHub Pages:
+Experience the live application deployed on Vercel:
 
-🔗 **[https://mohamedshafars19.github.io/password-strength-checker/](https://mohamedshafars19.github.io/password-strength-checker/)**
+🔗 **[https://password-strength-checker-black.vercel.app/](https://password-strength-checker-black.vercel.app/)**
+
+*(Also mirrored on GitHub Pages: [https://mohamedshafars19.github.io/password-strength-checker/](https://mohamedshafars19.github.io/password-strength-checker/))*
 
 ---
 
 ## Key Features
 
-- **Apple-Inspired Interface**: Crafted with Apple design aesthetics — soft `#F5F5F7` background, rounded white cards, refined typography (`SF Pro` stack), subtle elevation shadows, and smooth micro-interactions.
+- **macOS Desktop Window Architecture**: Designed to feel like a real native desktop application — featuring realistic window title bar with red, yellow, and green traffic lights, title bar lock badge, dark charcoal surfaces, and deep dark desktop wallpaper gradient.
+- **Full-Screen Spacious Layout**: Replaces narrow centered cards with an expansive desktop layout using 95% of viewport width and 92% of viewport height, organizing content across a 2-column workspace with a 6-tile requirements grid and live security metrics.
+- **Dark Theme by Default**: Premium, understated dark aesthetic using Apple's Dark Mode system colors — deep charcoal background, `#16171B` window chrome, `#1E1F25` surface cards, `#0A84FF` blue interactive accents, and `#30D158` success indicators.
 - **Dual Implementation Parity**: Python and JavaScript engines share identical validation logic, scoring models, and security checks.
 - **Real-Time Interactive Feedback**: Instant evaluation as you type, updating visual indicators, score progress, and checklist items.
 - **Show/Hide & One-Click Clear**: Native-feeling controls for toggling password visibility and resetting input.

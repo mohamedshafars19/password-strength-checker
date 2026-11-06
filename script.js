@@ -1,5 +1,5 @@
 /**
- * Password Strength Checker - Core Logic & UI Controller
+ * Password Strength Checker - Core Logic & macOS UI Controller
  * 100% Client-Side, Zero Tracking, Zero Network Calls.
  */
 
@@ -295,18 +295,24 @@ if (typeof module !== "undefined" && module.exports) {
   };
 }
 
-// Browser UI Controller
+// macOS Application Browser UI Controller
 if (typeof window !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.getElementById("password-input");
     const togglePasswordBtn = document.getElementById("toggle-password-btn");
     const clearInputBtn = document.getElementById("clear-input-btn");
+    const charCounter = document.getElementById("char-counter");
+
     const strengthBadge = document.getElementById("strength-badge");
     const strengthScore = document.getElementById("strength-score");
     const progressBar = document.getElementById("strength-progress-fill");
-    const recommendationsList = document.getElementById("recommendations-list");
-    const suggestionsSection = document.getElementById("suggestions-section");
     const strengthStatusText = document.getElementById("strength-status-text");
+
+    const metricStatus = document.getElementById("metric-status");
+    const metricTypes = document.getElementById("metric-types");
+    const metricLength = document.getElementById("metric-length");
+    const requirementsCounter = document.getElementById("requirements-counter");
+    const statusbarText = document.getElementById("statusbar-text");
 
     const reqLength = document.getElementById("req-length");
     const reqUpper = document.getElementById("req-upper");
@@ -315,55 +321,115 @@ if (typeof window !== "undefined") {
     const reqSpecial = document.getElementById("req-special");
     const reqLength12 = document.getElementById("req-length12");
 
-    function updateCheckmark(element, isMet) {
+    const chipCommon = document.getElementById("chip-common");
+    const chipRepeated = document.getElementById("chip-repeated");
+    const chipSequential = document.getElementById("chip-sequential");
+    const recommendationsList = document.getElementById("recommendations-list");
+
+    // Clear password input on initial page load as required
+    if (passwordInput) {
+      passwordInput.value = "";
+    }
+
+    function updateTile(element, isMet, isBonus = false) {
       if (!element) return;
+      const icon = element.querySelector(".req-icon");
+      const tag = element.querySelector(".req-status-tag");
+
       if (isMet) {
         element.classList.add("is-met");
         element.classList.remove("is-unmet");
-        const icon = element.querySelector(".req-icon");
         if (icon) {
-          icon.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+          icon.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        }
+        if (tag) {
+          tag.textContent = isBonus ? "Bonus Met" : "Satisfied";
         }
       } else {
         element.classList.remove("is-met");
         element.classList.add("is-unmet");
-        const icon = element.querySelector(".req-icon");
         if (icon) {
-          icon.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>`;
+          icon.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle></svg>`;
         }
+        if (tag) {
+          tag.textContent = isBonus ? "Recommended" : "Required";
+        }
+      }
+    }
+
+    function updateHeuristicChip(chip, isTriggered, triggerLabel, cleanLabel) {
+      if (!chip) return;
+      chip.className = "h-chip";
+      if (!passwordInput.value) {
+        chip.classList.add("chip-neutral");
+        chip.textContent = cleanLabel;
+      } else if (isTriggered) {
+        chip.classList.add("chip-warning");
+        chip.textContent = triggerLabel;
+      } else {
+        chip.classList.add("chip-passed");
+        chip.textContent = cleanLabel + ": Clean";
       }
     }
 
     function renderUI() {
       const val = passwordInput.value;
       const result = checkPasswordStrength(val);
+      const len = val.length;
+
+      // Character counter
+      if (charCounter) {
+        charCounter.textContent = `${len} character${len === 1 ? "" : "s"}`;
+      }
 
       // Clear button visibility
       if (clearInputBtn) {
-        clearInputBtn.style.opacity = val.length > 0 ? "1" : "0";
-        clearInputBtn.style.pointerEvents = val.length > 0 ? "auto" : "none";
+        clearInputBtn.style.opacity = len > 0 ? "1" : "0";
+        clearInputBtn.style.pointerEvents = len > 0 ? "auto" : "none";
       }
 
-      // Update Requirements
-      updateCheckmark(reqLength, result.requirements.length);
-      updateCheckmark(reqUpper, result.requirements.uppercase);
-      updateCheckmark(reqLower, result.requirements.lowercase);
-      updateCheckmark(reqNumber, result.requirements.digit);
-      updateCheckmark(reqSpecial, result.requirements.special);
-      updateCheckmark(reqLength12, result.requirements.length12);
+      // Update Requirement Tiles
+      updateTile(reqLength, result.requirements.length);
+      updateTile(reqUpper, result.requirements.uppercase);
+      updateTile(reqLower, result.requirements.lowercase);
+      updateTile(reqNumber, result.requirements.digit);
+      updateTile(reqSpecial, result.requirements.special);
+      updateTile(reqLength12, result.requirements.length12, true);
 
-      // Update Strength Badge & State Classes
-      strengthBadge.className = "strength-pill";
-      progressBar.className = "progress-fill";
+      // Requirements Counter Badge
+      if (requirementsCounter) {
+        requirementsCounter.textContent = `${result.score} of 5 met`;
+      }
+
+      // Metrics Snapshot
+      if (metricLength) {
+        metricLength.textContent = `${len} / 8 min`;
+      }
+
+      let typesCount = 0;
+      if (result.requirements.uppercase) typesCount++;
+      if (result.requirements.lowercase) typesCount++;
+      if (result.requirements.digit) typesCount++;
+      if (result.requirements.special) typesCount++;
+
+      if (metricTypes) {
+        metricTypes.textContent = `${typesCount} of 4`;
+      }
+
+      // Strength Badge & Progress Bar
+      strengthBadge.className = "mac-pill";
+      progressBar.className = "mac-progress-fill";
 
       let stateClass = "state-waiting";
       let statusDescriptor = "Waiting for input";
+      let statusbarMsg = "System Ready • Real-Time Local Engine";
 
-      if (val.length === 0) {
+      if (len === 0) {
         stateClass = "state-waiting";
         statusDescriptor = "Waiting for input";
         strengthScore.textContent = "0/5";
         progressBar.style.width = "0%";
+        if (metricStatus) metricStatus.textContent = "Awaiting Input";
       } else {
         strengthScore.textContent = `${result.score}/5`;
         progressBar.style.width = `${result.scorePercent}%`;
@@ -371,45 +437,56 @@ if (typeof window !== "undefined") {
         if (result.strength === "Weak") {
           stateClass = "state-weak";
           statusDescriptor = "Weak";
+          statusbarMsg = "Evaluation: Weak — Actionable improvements required";
+          if (metricStatus) metricStatus.textContent = "Weak (Poor)";
         } else if (result.strength === "Good") {
           stateClass = "state-good";
           statusDescriptor = "Good";
+          statusbarMsg = "Evaluation: Good — Meets most criteria";
+          if (metricStatus) metricStatus.textContent = "Good (Medium)";
         } else if (result.strength === "Excellent") {
           stateClass = "state-excellent";
           statusDescriptor = "Excellent";
+          statusbarMsg = "Evaluation: Excellent — Strong password accepted";
+          if (metricStatus) metricStatus.textContent = "Excellent (Strong)";
         }
       }
 
       strengthBadge.classList.add(stateClass);
       progressBar.classList.add(stateClass);
       strengthStatusText.textContent = statusDescriptor;
+      if (statusbarText) statusbarText.textContent = statusbarMsg;
 
-      // Update Recommendations List
+      // Heuristic Pattern Chips
+      updateHeuristicChip(chipCommon, result.securityChecks.isCommon, "Common Password!", "Common Check");
+      updateHeuristicChip(chipRepeated, result.securityChecks.hasRepeated, "Repeated Chars!", "Repetition Check");
+      updateHeuristicChip(chipSequential, result.securityChecks.hasSequential, "Sequences!", "Sequence Check");
+
+      // Recommendations List
       recommendationsList.innerHTML = "";
-      if (val.length === 0) {
+      if (len === 0) {
         const item = document.createElement("li");
-        item.className = "recommendation-item tip-neutral";
+        item.className = "rec-item rec-info";
         item.innerHTML = `
           <span class="rec-bullet">•</span>
-          <span>Enter a password above to begin security evaluation.</span>
+          <span>Enter a password above to evaluate strength and heuristic patterns.</span>
         `;
         recommendationsList.appendChild(item);
       } else if (result.isAcceptable && result.requirements.length12) {
         const item = document.createElement("li");
-        item.className = "recommendation-item tip-success";
+        item.className = "rec-item tip-success";
         item.innerHTML = `
           <span class="rec-icon-success">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </span>
-          <span>Outstanding password! All requirements and security guidelines are met.</span>
+          <span>Outstanding password! All requirements and security heuristics are satisfied.</span>
         `;
         recommendationsList.appendChild(item);
       } else {
         result.recommendations.forEach(rec => {
           const item = document.createElement("li");
-          item.className = "recommendation-item";
+          item.className = "rec-item";
 
-          // Icon or bullet style
           let iconSvg = `<span class="rec-bullet">•</span>`;
           if (rec.includes("common") || rec.includes("Avoid")) {
             item.classList.add("tip-warning");
@@ -446,6 +523,14 @@ if (typeof window !== "undefined") {
         renderUI();
       });
     }
+
+    // Escape Key to clear input
+    passwordInput.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        passwordInput.value = "";
+        renderUI();
+      }
+    });
 
     // Real-time input evaluation
     passwordInput.addEventListener("input", renderUI);
