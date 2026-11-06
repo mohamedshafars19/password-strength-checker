@@ -16,7 +16,7 @@ It provides real-time validation, security heuristic analysis, and actionable im
 
 Experience the live application deployed on Vercel:
 
-🔗 **[https://password-strength-checker-black.vercel.app/](https://password-strength-checker-black.vercel.app/)**
+🔗 **[https://password-strength-checker-lake.vercel.app/](https://password-strength-checker-lake.vercel.app/)**
 
 *(Also mirrored on GitHub Pages: [https://mohamedshafars19.github.io/password-strength-checker/](https://mohamedshafars19.github.io/password-strength-checker/))*
 
